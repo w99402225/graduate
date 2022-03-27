@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zust.se.graduate.entity.User">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="edu.zust.se.graduate.entity.User">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+<!--        <result column="confirm_password" property="confirmPassword" />-->
+        <result column="telephone" property="telephone" />
+        <result column="email" property="email" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="remarks" property="remarks" />
+        <result column="user_type" property="userType" />
+        <result column="balance" property="balance" />
+    </resultMap>
+
+
+</mapper>

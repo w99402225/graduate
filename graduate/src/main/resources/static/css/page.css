@@ -1,0 +1,215 @@
+body {
+	color: #333;
+	font-size: 16px;
+	line-height: 1.6em;
+	line-break: strict;
+	word-break: break-all;
+	text-align: justify;
+	text-justify: distribute;
+	background: url(../img/bgimg.jpg);
+}
+
+#tree-l {
+	position: absolute;
+	top: -3px;
+	left: -3px;
+	z-index: 5;
+}
+
+#tree-r {
+	position: absolute;
+	top: -3px;
+	right: -3px;
+	z-index: 5;
+}
+
+#footer
+{	
+	bottom:0px;
+	position: relative;
+	width: 100%;
+	height: 230px;
+	background: url(../img/footer.png) repeat-x;
+}
+#footer .copyright
+{
+	margin: 0px auto 0px auto;
+	width: 400px;
+	text-align: center;
+	padding-top: 30px;
+	color: #fff;
+}
+
+#back_top div {
+	position: absolute;
+	margin: auto;
+	right: 0px;
+	left: 0px;
+}
+
+#back_top {
+	height: 100px;
+	width: 100px;
+	border-radius: 3px;
+	display: block;
+	cursor: pointer;
+	position: fixed;
+	right: 50px;
+	bottom: 100px;
+	display: none;
+}
+
+#header {
+	width: 1000px;
+	height: 90px;
+	position: relative;
+	background: url(../img/headline.png) no-repeat;
+	z-index: 50;
+}
+
+#logo {
+	height: 70px;
+	margin-top: 15px;
+}
+
+#slogo {
+	height: 35px;
+	margin-left: 10px;
+	margin-top: 35px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.mf {
+	font-family: Franklin Gothic Medium, Arial Narrow, Arial, sans-serif;
+	font-size: 18px;
+}
+
+#oTable {
+	width: 66%;
+}
+
+#oTable #tdno {
+	background-color: coral;
+	text-align: center;
+}
+
+#oTable #tdyes {
+	background-color: #a5e5aa;
+	text-align: center;
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.frame-contents {
+	width: 958px;
+	border: 1px solid #b5b5b5;
+	margin: 0px auto 20px auto;
+	padding: 20px;
+	position: relative;
+	background: orange;
+}
+
+#newsticker {
+	width: 1000px;
+	height: 81px;
+	background: url(../img/wnall.png) no-repeat;
+	margin-bottom: 20px;
+	position: relative;
+}
+.tickercontainer { /* the outer div with the black border */
+background: #fff; 
+width: 830px; 
+height: 32px; 
+margin: 0; 
+padding: 0;
+overflow: hidden;
+position: absolute;
+top: 11px;
+left: 157px;
+border-radius: 5px;
+-webkit-border-radius: 5px;
+}
+.tickercontainer .mask { /* that serves as a mask. so you get a sort of padding both left and right */
+position: relative;
+left: 10px;
+top: 8px;
+width: 810px;
+overflow: hidden;
+}
+ul.newsticker {
+	/* that's your list */
+	position: relative;
+	left: 750px;
+	font: bold 10px Verdana;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.newsticker li {
+	float: left;
+	/* important: display inline gives incorrect results when you check for elem's width */
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	font-size: 14px;
+}
+
+ul.newsticker a {
+	white-space: nowrap;
+	padding: 0;
+	font: bold 10px Verdana;
+	margin: 0 50px 0 0;
+	font-size: 14px;
+}
+
+ul.newsticker span {
+	margin: 0 10px 0 0;
+}
+
+#newsticker .archive a {
+	position: absolute;
+	display: block;
+	overflow: hidden;
+	text-indent: -9999px;
+	top: 51px;
+	left: 913px;
+	width: 85px;
+	height: 30px;
+}
+
+table.mypage{
+	width:838px;
+	margin:20px auto;
+	border-right:#dcdcdc 1px solid;
+	border-top:#dcdcdc 1px solid;
+}
+table.mypage th{
+	background:#F5F5F5 url(../img/th_back_mypage.png) repeat-x top;
+	padding:10px;
+	text-align:center;
+	font-size:12px;
+	font-weight:bold;
+	border-left:#dcdcdc 1px solid;
+	border-bottom:#dcdcdc 1px solid;
+	vertical-align:middle;
+}
+table.mypage td{
+	padding:5px;
+	text-align:center;
+	font-size:12px;
+	border-left:#dcdcdc 1px solid;
+	border-bottom:#dcdcdc 1px solid;
+	vertical-align:middle;
+}
+table.mypage td.tr{
+	text-align:right;
+}
