@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.zust.se.graduate.entity.User">
+<mapper namespace="edu.zust.se.graduate.mapper.UserMapper">
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="edu.zust.se.graduate.entity.User">
         <id column="id" property="id" />
         <result column="account" property="account" />
-        <result column="name" property="name" />
+        <result column="real_name" property="realName" />
+        <result column="nickname" property="nickname" />
         <result column="password" property="password" />
-<!--        <result column="confirm_password" property="confirmPassword" />-->
         <result column="telephone" property="telephone" />
         <result column="email" property="email" />
         <result column="status" property="status" />
@@ -19,5 +19,49 @@
         <result column="balance" property="balance" />
     </resultMap>
 
+    <select id="findById" resultType="edu.zust.se.graduate.entity.User">
+        select *
+        from user
+        where 1=1
+        and id =#{id}
+    </select>
+
+    <select id="findAll" resultType="edu.zust.se.graduate.entity.User">
+        select *
+        from user
+        where 1=1
+    </select>
+
+    <select id="findByCondition" resultType="edu.zust.se.graduate.entity.User">
+        select *
+        from user
+        where 1=1
+        <if test="account != '' and account != null">
+            and account LIKE CONCAT('%',#{account},'%')
+        </if>
+        <if test="nickname != '' and nickname != null">
+            and nickname LIKE CONCAT('%',#{nickname},'%')
+        </if>
+        <if test="realName != '' and realName != null">
+            and real_name LIKE CONCAT('%',#{realName},'%')
+        </if>
+        <if test="telephone != '' and telephone != null">
+            and telephone LIKE CONCAT('%',#{telephone},'%')
+        </if>
+        <if test="email != '' and email != null">
+            and email=#{email}
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+        <if test="userType != null">
+            and user_type=#{userType}
+        </if>
+        <if test="outset != null">
+            <if test="pageSize != null">
+                limit #{outset}, #{pageSize}
+            </if>
+        </if>
+    </select>
 
 </mapper>

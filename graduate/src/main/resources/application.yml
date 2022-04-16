@@ -1,3 +1,6 @@
+server:
+  port: 9090
+
 spring:
   jackson:
     #格式化输出
@@ -17,19 +20,21 @@ spring:
     password: bjsxt
 
   mvc:
-    static-path-pattern: /static/**
+    pathmatch:
+      matching-strategy: ant_path_matcher
+#    static-path-pattern: /static/**
 #    view:
 #      prefix: /templates/
 #      suffix: .html
-  thymeleaf:
-    cache: false
-    check-template-location: true
-    encoding: UTF-8
-    mode: HTML5
-    prefix: classpath:/templates/
-    servlet:
-      content-type: text/html
-    suffix: .html
+#  thymeleaf:
+#    cache: false
+#    check-template-location: true
+#    encoding: UTF-8
+#    mode: HTML5
+#    prefix: classpath:/templates/
+#    servlet:
+#      content-type: text/html
+#    suffix: .html
 
 
 #mybatis配置

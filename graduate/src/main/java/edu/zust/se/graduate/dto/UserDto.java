@@ -1,9 +1,8 @@
-package edu.zust.se.graduate.entity;
+package edu.zust.se.graduate.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.zust.se.graduate.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,16 +12,14 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
 /**
  * @author 潘谦睿
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="User对象", description="用户")
-public class User extends Model<User> {
-
+@ApiModel(value = "UserDto", description = "用户Dto")
+public class UserDto implements Serializable {
     @ApiModelProperty(value = "id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -30,19 +27,8 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "账号")
     private String account;
 
-    @ApiModelProperty(value = "真实姓名")
-    private String realName;
-
-    @ApiModelProperty(value = "昵称")
-    private String nickname;
-
-    @JsonIgnore
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @JsonIgnore
-    @ApiModelProperty(value = "确认密码")
-    private String confirmPassword;
+    @ApiModelProperty(value = "账号名")
+    private String name;
 
     @ApiModelProperty(value = "手机号码")
     private String telephone;
@@ -65,15 +51,10 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "备注")
     private String remarks;
 
-    @ApiModelProperty(value = "用户身份(1:普通用户,2:操作员,3:审查员,4:管理员)")
+    @ApiModelProperty(value = "用户身份(1:普通用户,2:操作员,3:审查员)")
     private Integer userType;
 
     @ApiModelProperty(value = "余额")
     private Double balance;
-
-    @Override
-    public Serializable pkVal() {
-        return this.id;
-    }
 
 }

@@ -6,18 +6,18 @@ package edu.zust.se.graduate.enums;
  * @author 潘谦睿
  */
 
-public enum UserTypeEnum {
-    //用户身份(1:普通用户,2:操作员,3:审查员,4:管理员)
-    NORMAL(1,"普通用户"),
-    OPERATION(2,"操作员"),
-    REVIEW(3,"审查员"),
-    ADMIN(4,"管理员");
+public enum EventTypeEnum {
+    //事件类型(1:自然灾害,2:意外事故,3:爱心捐赠,4:个人募捐)
+    NATURAL(1,"自然灾害"),
+    ACCIDENT(2,"意外事故"),
+    CHARITY(3,"爱心捐赠"),
+    PERSONAL(4,"个人募捐");
 
     private Integer status;
 
     private String stateinfo;
 
-    private UserTypeEnum(Integer status, String stateinfo) {
+    private EventTypeEnum(Integer status, String stateinfo) {
         this.status = status;
         this.stateinfo = stateinfo;
     }
@@ -38,8 +38,8 @@ public enum UserTypeEnum {
         this.stateinfo = stateinfo;
     }
 
-    public static UserTypeEnum stateOf(int index) {
-        for (UserTypeEnum statusEnum : values()) {
+    public static EventTypeEnum stateOf(int index) {
+        for (EventTypeEnum statusEnum : values()) {
             if (statusEnum.getStatus() == index) {
                 return statusEnum;
             }

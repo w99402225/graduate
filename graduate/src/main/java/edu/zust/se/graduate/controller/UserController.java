@@ -1,23 +1,42 @@
 package edu.zust.se.graduate.controller;
 
+import edu.zust.se.graduate.entity.User;
+import edu.zust.se.graduate.enums.UserTypeEnum;
+import edu.zust.se.graduate.response.Result;
 import edu.zust.se.graduate.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/api/user")
 @Api(tags = {"用户相关接口"}, description = "用户相关接口")
 @Slf4j
 public class UserController {
     @Resource
     UserService userService;
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String home(){
         return "login";
+    }
+
+
+    @GetMapping("/findByCondition")
+    public Result findByCondition(@RequestParam(required = false) String account,
+                                  @RequestParam(required = false) String nickname,
+                                  @RequestParam(required = false) String realName,
+                                  @RequestParam(required = false) String telephone,
+                                  @RequestParam(required = false) String email,
+                                  @RequestParam(required = false) Integer status,
+                                  @RequestParam(required = false) Integer userType,
+                                  @RequestParam(required = false) Integer pageNum,
+                                  @RequestParam(required = false) Integer pageSize){
+        return userService.findByCondition(account, nickname, realName, telephone, email, status, userType, pageNum, pageSize);
     }
 }

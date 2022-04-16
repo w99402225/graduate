@@ -1,32 +1,22 @@
 package edu.zust.se.graduate.config;
 
-import com.baomidou.mybatisplus.core.injector.ISqlInjector;
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
-@EnableTransactionManagement
 @Configuration
-@MapperScan("edu.zust.se.graduate.dao")
+@MapperScan("edu.zust.se.graduate.mapper")
 public class MybatisPlusConfig {
-    /**
-     * 分页插件
-     */
+
+    // 最新版
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        return interceptor;
     }
 
-    /**
-     * 逻辑删除 用到
-     * @return
-     */
-    @Bean
-    public ISqlInjector sqlInjector() {
-        return new LogicSqlInjector();
-    }
 }
