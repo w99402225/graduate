@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @author 潘谦睿
  */
-@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
     User findById(Long id);
