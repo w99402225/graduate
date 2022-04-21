@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -33,17 +34,17 @@ public class Afford extends Model<Afford> {
     @ApiModelProperty(value = "捐款金额")
     private Double money;
 
-    @ApiModelProperty(value = "捐款状态")
+    @ApiModelProperty(value = "捐款状态(1:待使用,2：已捐赠)")
     private Integer state;
 
     @ApiModelProperty(value = "捐款目标类型(1:自然灾害,2:意外事故,3:爱心捐赠,4:个人募捐)")
     private Integer eventType;
 
     @ApiModelProperty(value = "捐款发起时间")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @ApiModelProperty(value = "捐款支付时间")
-    private Date affordTime;
+    private LocalDateTime affordTime;
 
     @ApiModelProperty(value = "支付编号")
     private String affordNo;

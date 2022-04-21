@@ -71,6 +71,9 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "余额")
     private Double balance;
 
+    @ApiModelProperty(value = "最后登录时间")
+    private LocalDateTime lastLoginTime;
+
     @Override
     public Serializable pkVal() {
         return this.id;

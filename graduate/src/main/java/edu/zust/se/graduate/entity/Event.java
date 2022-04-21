@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -42,11 +43,17 @@ public class Event extends Model<Event> {
     @ApiModelProperty(value = "事件现筹款金额")
     private Double nowMoney;
 
+    @ApiModelProperty(value = "事件发起人id")
+    private Long submitUserId;
+
     @ApiModelProperty(value = "事件发起时间")
-    private Date startDate;
+    private LocalDateTime startDate;
+
+    @ApiModelProperty(value = "筹款天数")
+    private Integer raiseDay;
 
     @ApiModelProperty(value = "事件截止时间")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @ApiModelProperty(value = "事件优先级")
     private Integer priority;

@@ -6,21 +6,16 @@ package edu.zust.se.graduate.enums;
  * @author 潘谦睿
  */
 
-public enum EventStageEnum {
-    //事件阶段(1:发起中,2:进行中,3:已截止,4:公示中,5:已结束,6:复核中,-1:异常)
-    START(1,"发起中"),
-    PROGRESS(2,"进行中"),
-    CLOSED(3,"已截止"),
-    PUBLIC(4,"公示中"),
-    COMPLETED(5,"已结束"),
-    REVIEW(6,"复核中"),
-    ABNORMAL(-1,"异常");
+public enum AffordStateEnum {
+    //捐款状态(1:待使用,2：已捐赠)
+    PENDING(1,"待使用"),
+    DONATED(2,"已捐赠");
 
     private Integer status;
 
     private String stateinfo;
 
-    private EventStageEnum(Integer status, String stateinfo) {
+    private AffordStateEnum(Integer status, String stateinfo) {
         this.status = status;
         this.stateinfo = stateinfo;
     }
@@ -41,8 +36,8 @@ public enum EventStageEnum {
         this.stateinfo = stateinfo;
     }
 
-    public static EventStageEnum stateOf(int index) {
-        for (EventStageEnum statusEnum : values()) {
+    public static AffordStateEnum stateOf(int index) {
+        for (AffordStateEnum statusEnum : values()) {
             if (statusEnum.getStatus() == index) {
                 return statusEnum;
             }

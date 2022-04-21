@@ -7,11 +7,12 @@ package edu.zust.se.graduate.enums;
  */
 
 public enum EventTypeEnum {
-    //事件类型(1:自然灾害,2:意外事故,3:爱心捐赠,4:个人募捐)
+    //事件类型(1:自然灾害,2:意外事故,3:爱心捐赠,4:个人募捐,9:所有)
     NATURAL(1,"自然灾害"),
     ACCIDENT(2,"意外事故"),
     CHARITY(3,"爱心捐赠"),
-    PERSONAL(4,"个人募捐");
+    PERSONAL(4,"个人募捐"),
+    ALL(9,"所有");
 
     private Integer status;
 

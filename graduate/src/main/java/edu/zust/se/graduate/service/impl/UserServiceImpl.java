@@ -2,11 +2,13 @@ package edu.zust.se.graduate.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.zust.se.graduate.dto.UserDto;
+import edu.zust.se.graduate.enums.UserTypeEnum;
 import edu.zust.se.graduate.mapper.UserMapper;
 import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.response.CodeConstant;
 import edu.zust.se.graduate.response.Result;
 import edu.zust.se.graduate.service.UserService;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.Map;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
+
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
@@ -31,13 +36,63 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result adduser(User user) {
+        if (StringUtil.isNullOrEmpty(user.getAccount())){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "账号不能为空");
+        }
+        if (StringUtil.isNullOrEmpty(user.getPassword())){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "密码不能为空");
+        }
+        user.setCreateTime(LocalDateTime.now());
+        if (StringUtil.isNullOrEmpty(user.getNickname())){
+            user.setNickname(user.getAccount());
+        }
+        user.setUserType(UserTypeEnum.NORMAL.getStatus());
         userMapper.insert(user);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
     }
 
     @Override
-    public void updateuser(User user) {
+    public Result managerSave(User user) {
+//        String account, String nickname, Integer userType, String email, String telephone
+//        User user = new User();
+//        user.setAccount(account);
+//        user.setNickname(nickname);
+//        user.setUserType(userType);
+//        if (!StringUtil.isNullOrEmpty(email)){
+//            user.setEmail(email);
+//        }
+//        if (!StringUtil.isNullOrEmpty(telephone)){
+//            user.setEmail(telephone);
+//        }
+        if (StringUtil.isNullOrEmpty(user.getAccount())){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "账号不能为空");
+        }
+        if (StringUtil.isNullOrEmpty(user.getNickname())){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "用户名不能为空");
+        }
+        if (null==user.getUserType()){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "用户类型不能为空");
+        }
+        user.setCreateTime(LocalDateTime.now());
+        user.setPassword(user.getAccount());
+        save(user);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "新增成功");
+    }
+
+    @Override
+    public Result updateUserDetail(User user) {
         userMapper.updateById(user);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "更新成功");
+    }
+
+    @Override
+    public Boolean accountCheck(String account) {
+        List<User> userList = userMapper.findByCondition(account,null,null,null,null,null,null,null,null);
+        if (userList.size()==0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

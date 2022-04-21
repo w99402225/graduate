@@ -27,6 +27,16 @@ public class UserController {
     }
 
 
+    @PostMapping("/managerSave")
+    public Result managerSave(@RequestBody User user){
+//        @RequestParam String account,
+//        @RequestParam String nickname,
+//        @RequestParam Integer userType,
+//        @RequestParam(required = false) String email,
+//        @RequestParam(required = false) String telephone
+        return userService.managerSave(user);
+    }
+
     @GetMapping("/findByCondition")
     public Result findByCondition(@RequestParam(required = false) String account,
                                   @RequestParam(required = false) String nickname,
