@@ -48,7 +48,9 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "事件类型不能为空");
         }
         event.setStartDate(LocalDateTime.now());
+        event.setEndDate(LocalDateTime.now().plusDays(event.getRaiseDay()));
         event.setStage(EventStageEnum.START.getStatus());
+        event.setDeleteType(0);
         Boolean success = save(event);
         if (success){
             return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
@@ -69,8 +71,20 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     public Result selectEventByType(Integer type) {
         QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type", type);
+        queryWrapper.eq("delete_type",0);
         queryWrapper.orderByAsc("priority");
         List<Event> eventList = eventMapper.selectList(queryWrapper);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功",eventList);
+    }
+
+    @Override
+    public Result delEvent(Long id) {
+        QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        List<Event> eventList = eventMapper.selectList(queryWrapper);
+        Event event = eventList.get(0);
+        event.setDeleteType(-1);
+        eventMapper.updateById(event);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "删除成功");
     }
 }

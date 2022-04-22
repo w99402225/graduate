@@ -32,4 +32,18 @@ public class EventController {
     public Result selectEventByType(@PathVariable Integer type){
         return eventService.selectEventByType(type);
     }
+
+    @DeleteMapping("/delById/{id}")
+    public Result delById(@PathVariable Long id){
+        return eventService.delEvent(id);
+
+
+
+
+
+
+
+
+
+    }
 }

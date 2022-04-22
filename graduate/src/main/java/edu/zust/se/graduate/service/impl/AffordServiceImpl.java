@@ -69,4 +69,12 @@ public class AffordServiceImpl extends ServiceImpl<AffordMapper, Afford> impleme
         List<Afford> affordList = affordMapper.selectList(queryWrapper);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功",affordList);
     }
+
+    @Override
+    public Result selectAffordByUserId(Long userId) {
+        QueryWrapper<Afford> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<Afford> affordList = affordMapper.selectList(queryWrapper);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功",affordList);
+    }
 }

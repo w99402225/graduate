@@ -33,4 +33,9 @@ public class AffordController {
     public Result selectAffordByType(@PathVariable Integer type){
         return affordService.selectAffordByType(type);
     }
+
+    @GetMapping("/selectByUserId")
+    public Result selectByUserId(@RequestParam Long userId){
+        return affordService.selectAffordByUserId(userId);
+    }
 }

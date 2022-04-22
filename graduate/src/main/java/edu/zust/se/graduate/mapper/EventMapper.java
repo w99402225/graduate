@@ -5,4 +5,5 @@ import edu.zust.se.graduate.entity.Event;
 
 public interface EventMapper extends BaseMapper<Event> {
 
+
 }

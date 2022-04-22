@@ -16,4 +16,6 @@ public interface AffordService extends IService<Afford> {
     //根据事件类型查找捐款，按捐款金额排序
     Result selectAffordByType(Integer eventType);
 
+    //根据用户id查找用户捐款
+    Result selectAffordByUserId(Long userId);
 }

@@ -15,4 +15,7 @@ public interface EventService extends IService<Event> {
     //根据事件类型查找事件，按优先度排序
     Result selectEventByType(Integer type);
 
+    //逻辑删除事件
+    Result delEvent(Long id);
+
 }
