@@ -14,9 +14,12 @@ public interface UserService extends IService<User> {
 
     Result updateUserDetail(User user);
 
-    Boolean accountCheck(String account);
+    Result login(String account, String password);
 
-    UserDto findById(Long id);
+    Result accountCheck(String account);
+
+
+    Result findById(Long id);
 
     UserDto loginByAccount(String account,String password);
 

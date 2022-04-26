@@ -46,8 +46,17 @@ public class Event extends Model<Event> {
     @ApiModelProperty(value = "事件发起人id")
     private Long submitUserId;
 
+    @ApiModelProperty(value = "事件操作员id")
+    private Long operationUserId;
+
+    @ApiModelProperty(value = "事件审查员id")
+    private Long reviewUserId;
+
     @ApiModelProperty(value = "事件发起时间")
     private LocalDateTime startDate;
+
+    @ApiModelProperty(value = "事件更新时间")
+    private LocalDateTime updateDate;
 
     @ApiModelProperty(value = "筹款天数")
     private Integer raiseDay;

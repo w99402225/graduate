@@ -21,11 +21,15 @@ public class UserController {
     @Resource
     UserService userService;
 
-    @GetMapping("/login")
-    public String home(){
-        return "login";
+    @PostMapping("/login")
+    public Result login(@RequestBody User user){
+        return userService.login(user.getAccount(),user.getPassword());
     }
 
+    @RequestMapping("/findById")
+    public Result findById(@RequestParam Long userId){
+        return userService.findById(userId);
+    }
 
     @PostMapping("/managerSave")
     public Result managerSave(@RequestBody User user){

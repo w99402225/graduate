@@ -36,13 +36,12 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
-    @JsonIgnore
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @JsonIgnore
-    @ApiModelProperty(value = "确认密码")
-    private String confirmPassword;
+//    @JsonIgnore
+//    @ApiModelProperty(value = "确认密码")
+//    private String confirmPassword;
 
     @ApiModelProperty(value = "手机号码")
     private String telephone;

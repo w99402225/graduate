@@ -1,5 +1,6 @@
 package edu.zust.se.graduate.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.zust.se.graduate.dto.UserDto;
 import edu.zust.se.graduate.enums.UserTypeEnum;
@@ -86,18 +87,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Boolean accountCheck(String account) {
+    public Result login(String account, String password) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", account);
+        queryWrapper.eq("password",password);
+        List<User> userList = userMapper.selectList(queryWrapper);
+        if (userList.size()==0){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "账号或密码错误");
+        }
+        UserDto userDto = e2d(userList.get(0));
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "登录成功",userDto);
+    }
+
+    @Override
+    public Result accountCheck(String account) {
         List<User> userList = userMapper.findByCondition(account,null,null,null,null,null,null,null,null);
         if (userList.size()==0){
-            return true;
+            return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "此账号可用");
         }else {
-            return false;
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "此账号已被注册");
         }
     }
 
     @Override
-    public UserDto findById(Long id) {
-        return e2d(findUserById(id));
+    public Result findById(Long id) {
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查找成功",e2d(findUserById(id)));
     }
 
     @Override

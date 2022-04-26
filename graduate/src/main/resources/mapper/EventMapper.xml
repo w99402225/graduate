@@ -11,7 +11,10 @@
         <result column="total_money" property="totalMoney" />
         <result column="now_money" property="nowMoney" />
         <result column="submit_user_id" property="submitUserId" />
+        <result column="operation_user_id" property="operationUserId" />
+        <result column="review_user_id" property="reviewUserId" />
         <result column="start_date" property="startDate" />
+        <result column="update_date" property="updateDate" />
         <result column="raise_day" property="raiseDay" />
         <result column="end_date" property="endDate" />
         <result column="priority" property="priority" />

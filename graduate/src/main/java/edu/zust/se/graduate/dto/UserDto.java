@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @ApiModel(value = "UserDto", description = "用户Dto")
 public class UserDto implements Serializable {
+
     @ApiModelProperty(value = "id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -27,8 +28,11 @@ public class UserDto implements Serializable {
     @ApiModelProperty(value = "账号")
     private String account;
 
-    @ApiModelProperty(value = "账号名")
-    private String name;
+    @ApiModelProperty(value = "真实姓名")
+    private String realName;
+
+    @ApiModelProperty(value = "昵称")
+    private String nickname;
 
     @ApiModelProperty(value = "手机号码")
     private String telephone;
@@ -51,10 +55,13 @@ public class UserDto implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remarks;
 
-    @ApiModelProperty(value = "用户身份(1:普通用户,2:操作员,3:审查员)")
+    @ApiModelProperty(value = "用户身份(1:普通用户,2:操作员,3:审查员,4:管理员)")
     private Integer userType;
 
     @ApiModelProperty(value = "余额")
     private Double balance;
+
+    @ApiModelProperty(value = "最后登录时间")
+    private LocalDateTime lastLoginTime;
 
 }
