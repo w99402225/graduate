@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zust.se.graduate.mapper.EventMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="edu.zust.se.graduate.entity.Event">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="details" property="details" />
+        <result column="img" property="img" />
+        <result column="images" property="images" />
+        <result column="total_money" property="totalMoney" />
+        <result column="now_money" property="nowMoney" />
+        <result column="submit_user_id" property="submitUserId" />
+        <result column="operation_user_id" property="operationUserId" />
+        <result column="review_user_id" property="reviewUserId" />
+        <result column="start_date" property="startDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="raise_day" property="raiseDay" />
+        <result column="end_date" property="endDate" />
+        <result column="priority" property="priority" />
+        <result column="type" property="type" />
+        <result column="stage" property="stage" />
+        <result column="delete_type" property="deleteType" />
+    </resultMap>
+
+    <select id="findById" resultType="edu.zust.se.graduate.entity.Event">
+        select *
+        from event
+        where 1=1
+        and id =#{id}
+    </select>
+
+    <select id="findByCondition" resultType="edu.zust.se.graduate.entity.Event">
+        select *
+        from user
+        where 1=1
+        <if test="account != '' and account != null">
+            and account LIKE CONCAT('%',#{account},'%')
+        </if>
+        <if test="nickname != '' and nickname != null">
+            and nickname LIKE CONCAT('%',#{nickname},'%')
+        </if>
+        <if test="realName != '' and realName != null">
+            and real_name LIKE CONCAT('%',#{realName},'%')
+        </if>
+        <if test="telephone != '' and telephone != null">
+            and telephone LIKE CONCAT('%',#{telephone},'%')
+        </if>
+        <if test="email != '' and email != null">
+            and email=#{email}
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+        <if test="userType != null">
+            and user_type=#{userType}
+        </if>
+        <if test="outset != null">
+            <if test="pageSize != null">
+                limit #{outset}, #{pageSize}
+            </if>
+        </if>
+    </select>
+
+</mapper>
