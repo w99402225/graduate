@@ -3,6 +3,7 @@ package edu.zust.se.graduate.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.zust.se.graduate.dto.UserDto;
+import edu.zust.se.graduate.enums.UserStatusEnum;
 import edu.zust.se.graduate.enums.UserTypeEnum;
 import edu.zust.se.graduate.mapper.UserMapper;
 import edu.zust.se.graduate.entity.User;
@@ -47,6 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtil.isNullOrEmpty(user.getNickname())){
             user.setNickname(user.getAccount());
         }
+        user.setStatus(UserStatusEnum.NORMAL.getStatus());
         user.setUserType(UserTypeEnum.NORMAL.getStatus());
         userMapper.insert(user);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
@@ -75,7 +77,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "用户类型不能为空");
         }
         user.setCreateTime(LocalDateTime.now());
+        //管理员新增账号密码默认为账号
         user.setPassword(user.getAccount());
+        user.setStatus(UserStatusEnum.NORMAL.getStatus());
         save(user);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "新增成功");
     }

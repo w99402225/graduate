@@ -4,6 +4,7 @@ package edu.zust.se.graduate.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.zust.se.graduate.entity.Event;
+import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.enums.EventStageEnum;
 import edu.zust.se.graduate.mapper.EventMapper;
 import edu.zust.se.graduate.response.CodeConstant;
@@ -19,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -86,5 +89,36 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         event.setDeleteType(-1);
         eventMapper.updateById(event);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "删除成功");
+    }
+
+    @Override
+    public Result selectEventByCondition(String name, Integer type, Integer stage, Integer pageNum, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        int outset = 0;
+        int pages = 1;
+        List<Event> eventListTotal = eventMapper.findByCondition(name, type, stage, null, null);
+        if (pageNum!=null&&pageSize!=null){
+            outset = (pageNum-1)*pageSize;
+            pages =eventListTotal.size()/pageSize;
+            if(eventListTotal.size()%pageSize!=0){
+                pages++;
+            }
+        }
+        List<Event> eventList = eventMapper.findByCondition(name, type, stage, outset, pageSize);
+        map.put("eventList", eventList);
+        //若未传size、page，将返回所有结果，所以将current当前页为1，size为总条数传回
+        if (pageSize!=null){
+            map.put("pageSize",pageSize);
+        }else {
+            map.put("pageSize",eventListTotal.size());
+        }
+        if (pageNum!=null){
+            map.put("pageNum",pageNum);
+        }else {
+            map.put("pageNum",1);
+        }
+        map.put("total",eventListTotal.size());
+        map.put("pages",pages);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功！", map);
     }
 }

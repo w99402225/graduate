@@ -32,28 +32,17 @@
 
     <select id="findByCondition" resultType="edu.zust.se.graduate.entity.Event">
         select *
-        from user
+        from event
         where 1=1
-        <if test="account != '' and account != null">
-            and account LIKE CONCAT('%',#{account},'%')
+        and delete_type=0
+        <if test="name != '' and name != null">
+            and name LIKE CONCAT('%',#{name},'%')
         </if>
-        <if test="nickname != '' and nickname != null">
-            and nickname LIKE CONCAT('%',#{nickname},'%')
+        <if test="type != null and type != 0">
+            and type=#{type}
         </if>
-        <if test="realName != '' and realName != null">
-            and real_name LIKE CONCAT('%',#{realName},'%')
-        </if>
-        <if test="telephone != '' and telephone != null">
-            and telephone LIKE CONCAT('%',#{telephone},'%')
-        </if>
-        <if test="email != '' and email != null">
-            and email=#{email}
-        </if>
-        <if test="status != null">
-            and status=#{status}
-        </if>
-        <if test="userType != null">
-            and user_type=#{userType}
+        <if test="stage != null and stage != 0">
+            and stage=#{stage}
         </if>
         <if test="outset != null">
             <if test="pageSize != null">

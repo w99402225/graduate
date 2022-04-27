@@ -18,4 +18,6 @@ public interface EventService extends IService<Event> {
     //逻辑删除事件
     Result delEvent(Long id);
 
+    //条件查询事件
+    Result selectEventByCondition(String name, Integer type, Integer stage, Integer pageNum, Integer pageSize);
 }

@@ -36,14 +36,14 @@ public class EventController {
     @DeleteMapping("/delById/{id}")
     public Result delById(@PathVariable Long id){
         return eventService.delEvent(id);
+    }
 
-
-
-
-
-
-
-
-
+    @GetMapping("/selectByCondition")
+    public Result selectByCondition(@RequestParam(required = false) String name,
+                                    @RequestParam(required = false) Integer type,
+                                    @RequestParam(required = false) Integer stage,
+                                    @RequestParam(required = false) Integer pageNum,
+                                    @RequestParam(required = false) Integer pageSize){
+        return eventService.selectEventByCondition(name, type, stage, pageNum, pageSize);
     }
 }

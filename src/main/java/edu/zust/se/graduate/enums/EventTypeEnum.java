@@ -12,7 +12,7 @@ public enum EventTypeEnum {
     ACCIDENT(2,"意外事故"),
     CHARITY(3,"爱心捐赠"),
     PERSONAL(4,"个人募捐"),
-    ALL(9,"所有");
+    ALL(0,"所有");
 
     private Integer status;
 

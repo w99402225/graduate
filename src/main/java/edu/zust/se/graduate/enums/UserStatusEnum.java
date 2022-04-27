@@ -7,10 +7,10 @@ package edu.zust.se.graduate.enums;
  */
 
 public enum UserStatusEnum {
-    //状态：1.冻结；2.正常；3.删除
-    NORMAL(1,"普通用户"),
-    OPERATION(2,"操作员"),
-    REVIEW(3,"审查员");
+    //状态：1.正常；2.冻结；3.删除
+    NORMAL(1,"正常"),
+    FREEZE(2,"冻结"),
+    DELETE(3,"删除");
 
     private Integer status;
 

@@ -7,13 +7,14 @@ package edu.zust.se.graduate.enums;
  */
 
 public enum EventStageEnum {
-    //事件阶段(1:发起中,2:进行中,3:已截止,4:公示中,5:已结束,6:复核中,-1:异常)
+    //事件阶段(1:发起中,2:待审批,3:募捐中,4:已截止,5:公示中,6:已结束,7:复核中,-1:异常)
     START(1,"发起中"),
-    PROGRESS(2,"进行中"),
-    CLOSED(3,"已截止"),
-    PUBLIC(4,"公示中"),
-    COMPLETED(5,"已结束"),
-    REVIEW(6,"复核中"),
+    PENDING(2,"待审批"),
+    PROGRESS(3,"募捐中"),
+    CLOSED(4,"已截止"),
+    PUBLIC(5,"公示中"),
+    COMPLETED(6,"已结束"),
+    REVIEW(7,"复核中"),
     ABNORMAL(-1,"异常");
 
     private Integer status;
