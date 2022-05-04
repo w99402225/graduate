@@ -44,6 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StringUtil.isNullOrEmpty(user.getPassword())){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "密码不能为空");
         }
+        if (!accountCheck(user.getAccount()).isSuccess()){
+            return accountCheck(user.getAccount());
+        }
         user.setCreateTime(LocalDateTime.now());
         if (StringUtil.isNullOrEmpty(user.getNickname())){
             user.setNickname(user.getAccount());
@@ -51,7 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setStatus(UserStatusEnum.NORMAL.getStatus());
         user.setUserType(UserTypeEnum.NORMAL.getStatus());
         userMapper.insert(user);
-        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "注册成功");
     }
 
     @Override
@@ -75,6 +78,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         if (null==user.getUserType()){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "用户类型不能为空");
+        }
+        if (!accountCheck(user.getAccount()).isSuccess()){
+            return accountCheck(user.getAccount());
         }
         user.setCreateTime(LocalDateTime.now());
         //管理员新增账号密码默认为账号
@@ -100,6 +106,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "账号或密码错误");
         }
         UserDto userDto = e2d(userList.get(0));
+        User user = userList.get(0);
+        user.setLastLoginTime(LocalDateTime.now());
+        userMapper.updateById(user);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "登录成功",userDto);
     }
 

@@ -34,6 +34,9 @@ public class UserDto implements Serializable {
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
+    @ApiModelProperty(value = "头像地址")
+    private String avatarUrl;
+
     @ApiModelProperty(value = "手机号码")
     private String telephone;
 

@@ -43,6 +43,9 @@ public class User extends Model<User> {
 //    @ApiModelProperty(value = "确认密码")
 //    private String confirmPassword;
 
+    @ApiModelProperty(value = "头像地址")
+    private String avatarUrl;
+
     @ApiModelProperty(value = "手机号码")
     private String telephone;
 

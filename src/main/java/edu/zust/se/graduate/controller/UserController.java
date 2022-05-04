@@ -53,4 +53,9 @@ public class UserController {
                                   @RequestParam(required = false) Integer pageSize){
         return userService.findByCondition(account, nickname, realName, telephone, email, status, userType, pageNum, pageSize);
     }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody User user){
+        return userService.adduser(user);
+    }
 }
