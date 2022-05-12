@@ -3,10 +3,15 @@ package edu.zust.se.graduate.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import edu.zust.se.graduate.dto.EventDto;
 import edu.zust.se.graduate.entity.Event;
+import edu.zust.se.graduate.entity.Images;
 import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.enums.EventStageEnum;
+import edu.zust.se.graduate.enums.UserTypeEnum;
 import edu.zust.se.graduate.mapper.EventMapper;
+import edu.zust.se.graduate.mapper.ImagesMapper;
+import edu.zust.se.graduate.mapper.UserMapper;
 import edu.zust.se.graduate.response.CodeConstant;
 import edu.zust.se.graduate.response.Result;
 import edu.zust.se.graduate.service.EventService;
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -31,31 +37,43 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     private static Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
     @Resource
     private EventMapper eventMapper;
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private ImagesMapper imagesMapper;
 
 
     @Override
-    public Result addEvent(Event event) {
-        if (StringUtil.isNullOrEmpty(event.getName())){
+    public Result addEvent(EventDto eventDto) {
+        if (StringUtil.isNullOrEmpty(eventDto.getName())){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "事件名不能为空");
         }
-        if (StringUtil.isNullOrEmpty(event.getDetails())){
+        if (StringUtil.isNullOrEmpty(eventDto.getDetails())){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "事件详情不能为空");
         }
-        if (null==event.getTotalMoney()||event.getTotalMoney()==0){
+        if (null==eventDto.getTotalMoney()||eventDto.getTotalMoney()==0){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "筹款金额不能为空");
         }
-        if (null==event.getRaiseDay()||event.getRaiseDay()==0){
+        if (null==eventDto.getRaiseDay()||eventDto.getRaiseDay()==0){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "筹款天数不能为空");
         }
-        if (null==event.getType()||event.getType()==0){
+        if (null==eventDto.getType()||eventDto.getType()==0){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "事件类型不能为空");
         }
-        event.setStartDate(LocalDateTime.now());
-        event.setEndDate(LocalDateTime.now().plusDays(event.getRaiseDay()));
-        event.setStage(EventStageEnum.START.getStatus());
-        event.setDeleteType(0);
-        Boolean success = save(event);
+        eventDto.setStartDate(LocalDateTime.now());
+        eventDto.setEndDate(LocalDateTime.now().plusDays(eventDto.getRaiseDay()));
+        eventDto.setStage(EventStageEnum.START.getStatus());
+        eventDto.setDeleteType(0);
+        Boolean success = save(eventDto);
         if (success){
+            if (eventDto.getImages()!=null){
+                for (int x=0 ; x<eventDto.getImages().length ;x++){
+                    Images images = new Images();
+                    images.setFilesId(eventDto.getImages()[x]);
+                    images.setEventId(eventDto.getId());
+                    imagesMapper.insert(images);
+                }
+            }
             return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
         }else {
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.SYSTEM_ERROR, "提交失败");
@@ -67,7 +85,18 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         QueryWrapper<Event> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         List<Event> eventList = eventMapper.selectList(queryWrapper);
-        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功",eventList.get(0));
+        Map<String, Object> map = new HashMap<>();
+        Event event = eventList.get(0);
+        map.put("event",event);
+        User user = userMapper.findById(event.getSubmitUserId());
+        map.put("tel",user.getTelephone());
+        map.put("userName",user.getRealName());
+        Duration duration = Duration.between(LocalDateTime.now(),event.getEndDate());
+        map.put("day",duration.toDays());
+        map.put("hour",duration.toHours()%24);
+        map.put("min",duration.toMinutes()%60);
+        map.put("second",duration.toMillis()/1000%60);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功",map);
     }
 
     @Override
@@ -120,5 +149,29 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         map.put("total",eventListTotal.size());
         map.put("pages",pages);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功！", map);
+    }
+
+    @Override
+    public Result operation(Event event) {
+        User user =userMapper.findById(event.getOperationUserId());
+        if (user.getUserType()!= UserTypeEnum.OPERATION.getStatus()){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "只有操作员可进行此项操作");
+        }
+        event.setUpdateDate(LocalDateTime.now());
+        event.setStage(EventStageEnum.PENDING.getStatus());
+        eventMapper.updateById(event);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "审批通过！");
+    }
+
+    @Override
+    public Result refuse(Event event) {
+        User user =userMapper.findById(event.getOperationUserId());
+        if (user.getUserType()!= UserTypeEnum.OPERATION.getStatus()&&user.getUserType()!=UserTypeEnum.REVIEW.getStatus()){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "只有操作员/审查员可进行此项操作");
+        }
+        event.setUpdateDate(LocalDateTime.now());
+        event.setStage(EventStageEnum.ABNORMAL.getStatus());
+        eventMapper.updateById(event);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "已成功驳回！");
     }
 }

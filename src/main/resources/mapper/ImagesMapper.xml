@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zust.se.graduate.mapper.ImagesMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="edu.zust.se.graduate.entity.Images">
+        <id column="id" property="id" />
+        <result column="event_id" property="eventId" />
+        <result column="files_id" property="filesId" />
+    </resultMap>
+
+    <select id="findByEventId" resultType="edu.zust.se.graduate.entity.Files">
+        select *
+        from images,files
+        where 1=1
+        and images.event_id =#{eventId}
+        and files.id = images.files_id
+    </select>
+
+
+</mapper>

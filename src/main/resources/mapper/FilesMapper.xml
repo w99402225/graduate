@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.zust.se.graduate.mapper.FilesMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="edu.zust.se.graduate.entity.Files">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="size" property="size" />
+        <result column="url" property="url" />
+        <result column="delete_type" property="deleteType" />
+        <result column="md5" property="md5" />
+    </resultMap>
+
+    <select id="findById" resultType="edu.zust.se.graduate.entity.Files">
+        select *
+        from file
+        where 1=1
+        and id =#{id}
+    </select>
+
+    <insert id="addFiles" parameterType="edu.zust.se.graduate.entity.Files" useGeneratedKeys="true" keyProperty="id">
+        insert into files (name,type,size,url,delete_type,md5) values (#{name},#{type},#{size},#{url},#{deleteType},#{md5});
+    </insert>
+
+</mapper>

@@ -34,8 +34,8 @@ public class Event extends Model<Event> {
     @ApiModelProperty(value = "封面图片")
     private String img;
 
-    @ApiModelProperty(value = "详情图片")
-    private String images;
+//    @ApiModelProperty(value = "详情图片")
+//    private String images;
 
     @ApiModelProperty(value = "事件目标筹款金额")
     private Double totalMoney;
@@ -76,4 +76,6 @@ public class Event extends Model<Event> {
     @ApiModelProperty(value = "删除标记(-1:删除，0:未删除)")
     private Integer deleteType;
 
+    @ApiModelProperty(value = "驳回理由")
+    private String remark;
 }

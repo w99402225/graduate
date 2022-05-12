@@ -9,7 +9,9 @@ import edu.zust.se.graduate.mapper.UserMapper;
 import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.response.CodeConstant;
 import edu.zust.se.graduate.response.Result;
+import edu.zust.se.graduate.service.FileService;
 import edu.zust.se.graduate.service.UserService;
+import edu.zust.se.graduate.util.UpdateUtil;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,8 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +39,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private FileService fileService;
+
+
+//    @Override
+//    public Result uploadAvatar(MultipartFile file) {
+//        try {
+//            fileService.upload(file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "上传成功");
+//    }
 
     @Override
     public Result adduser(User user) {
@@ -92,7 +110,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result updateUserDetail(User user) {
-        userMapper.updateById(user);
+        User oldUser = userMapper.findById(user.getId());
+        UpdateUtil.copyNullProperties(user,oldUser);
+        oldUser.setUpdateTime(LocalDateTime.now());
+        oldUser.setUpdateId(user.getId());
+        userMapper.updateById(oldUser);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "更新成功");
     }
 
@@ -120,6 +142,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }else {
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "此账号已被注册");
         }
+    }
+
+    @Override
+    public Result updatePassword(Long id, String password, String newPassword) {
+        User realUser = userMapper.findById(id);
+        String oldPassword = realUser.getPassword();
+        if (!oldPassword.equals(password)){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "密码不正确");
+        }
+        realUser.setPassword(newPassword);
+        realUser.setUpdateTime(LocalDateTime.now());
+        realUser.setUpdateId(realUser.getId());
+        userMapper.updateById(realUser);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "修改成功");
     }
 
     @Override

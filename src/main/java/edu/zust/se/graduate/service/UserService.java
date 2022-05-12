@@ -5,8 +5,13 @@ import edu.zust.se.graduate.dto.UserDto;
 import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.response.Result;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 public interface UserService extends IService<User> {
+
+//    Result uploadAvatar(MultipartFile file);
 
     Result adduser(User user);
 
@@ -18,6 +23,7 @@ public interface UserService extends IService<User> {
 
     Result accountCheck(String account);
 
+    Result updatePassword(Long id, String password, String newPassword);
 
     Result findById(Long id);
 

@@ -62,7 +62,7 @@ public class User extends Model<User> {
     private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "更新者")
-    private String updateId;
+    private Long updateId;
 
     @ApiModelProperty(value = "备注")
     private String remarks;

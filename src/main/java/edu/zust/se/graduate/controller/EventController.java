@@ -1,6 +1,8 @@
 package edu.zust.se.graduate.controller;
 
+import edu.zust.se.graduate.dto.EventDto;
 import edu.zust.se.graduate.entity.Event;
+import edu.zust.se.graduate.entity.User;
 import edu.zust.se.graduate.response.Result;
 import edu.zust.se.graduate.service.EventService;
 import io.swagger.annotations.Api;
@@ -19,8 +21,8 @@ public class EventController {
     EventService eventService;
 
     @PostMapping("/eventSubmit")
-    public Result eventSubmit(@RequestBody Event event){
-        return eventService.addEvent(event);
+    public Result eventSubmit(@RequestBody EventDto eventDto){
+        return eventService.addEvent(eventDto);
     }
 
     @GetMapping("/selectById")
@@ -45,5 +47,15 @@ public class EventController {
                                     @RequestParam(required = false) Integer pageNum,
                                     @RequestParam(required = false) Integer pageSize){
         return eventService.selectEventByCondition(name, type, stage, pageNum, pageSize);
+    }
+
+    @PostMapping("/operation")
+    public Result operation(@RequestBody Event event){
+        return eventService.operation(event);
+    }
+
+    @PostMapping("/refuse")
+    public Result refuse(@RequestBody Event event){
+        return eventService.refuse(event);
     }
 }

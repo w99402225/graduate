@@ -58,4 +58,16 @@ public class UserController {
     public Result register(@RequestBody User user){
         return userService.adduser(user);
     }
+
+    @PostMapping("/updateUserDetail")
+    public Result updateUserDetail(@RequestBody User user){
+        return userService.updateUserDetail(user);
+    }
+
+    @GetMapping("/updatePassword")
+    public Result updatePassword(@RequestParam Long id,
+                                 @RequestParam String password,
+                                 @RequestParam String newPassword){
+        return userService.updatePassword(id, password, newPassword);
+    }
 }
