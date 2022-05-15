@@ -49,6 +49,15 @@ public class EventController {
         return eventService.selectEventByCondition(name, type, stage, pageNum, pageSize);
     }
 
+    @GetMapping("/searchEvent")
+    public Result searchEvent(@RequestParam(required = false) String name,
+                              @RequestParam(required = false) Integer type,
+                              @RequestParam(required = false) Integer stage,
+                              @RequestParam(required = false) Integer pageNum,
+                              @RequestParam(required = false) Integer pageSize){
+        return eventService.searchEvent(name, type, stage, pageNum, pageSize);
+    }
+
     @PostMapping("/operation")
     public Result operation(@RequestBody Event event){
         return eventService.operation(event);

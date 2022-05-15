@@ -31,7 +31,7 @@
         and id =#{id}
     </select>
 
-    <select id="findByCondition" resultType="edu.zust.se.graduate.entity.Event">
+    <select id="findByCondition" resultType="edu.zust.se.graduate.dto.EventDto">
         select *
         from event
         where 1=1
@@ -52,4 +52,27 @@
         </if>
     </select>
 
+    <select id="searchEvent" resultType="edu.zust.se.graduate.dto.EventDto">
+        select *
+        from event
+        where 1=1
+        and delete_type=0
+        <if test="name != '' and name != null">
+            and name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="type != null and type != 0">
+            and type=#{type}
+        </if>
+        <if test="stage != null and stage != 0">
+            and stage=#{stage}
+        </if>
+        <if test="stage == null or stage == 0">
+            and (stage=3 or stage=4 or stage=5 or stage=6 or stage=7 )
+        </if>
+        <if test="outset != null">
+            <if test="pageSize != null">
+                limit #{outset}, #{pageSize}
+            </if>
+        </if>
+    </select>
 </mapper>

@@ -27,4 +27,7 @@ public interface EventService extends IService<Event> {
 
     //驳回事件
     Result refuse(Event event);
+
+    //条件查询事件
+    Result searchEvent(String name, Integer type, Integer stage, Integer pageNum, Integer pageSize);
 }

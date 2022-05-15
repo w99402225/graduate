@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import edu.zust.se.graduate.entity.Event;
 import edu.zust.se.graduate.entity.Files;
 import edu.zust.se.graduate.entity.Images;
+import edu.zust.se.graduate.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,4 +32,6 @@ public class EventDto extends Event {
     @ApiModelProperty(value = "详情图片")
     private List<Files> filesList;
 
+    @ApiModelProperty(value = "募捐用户信息")
+    private User submitUser;
 }

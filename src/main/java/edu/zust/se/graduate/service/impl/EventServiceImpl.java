@@ -15,10 +15,12 @@ import edu.zust.se.graduate.mapper.UserMapper;
 import edu.zust.se.graduate.response.CodeConstant;
 import edu.zust.se.graduate.response.Result;
 import edu.zust.se.graduate.service.EventService;
+import edu.zust.se.graduate.util.UpdateUtil;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +74,10 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
                     images.setFilesId(eventDto.getImages()[x]);
                     images.setEventId(eventDto.getId());
                     imagesMapper.insert(images);
+                    if (eventDto.getImg()==null){
+                        eventDto.setImg("http://localhost:9090/file/5f98146705614bfb84bbd8e1a71ba506.jpg");
+                        eventMapper.updateById(eventDto);
+                    }
                 }
             }
             return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "提交成功");
@@ -87,10 +93,12 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         List<Event> eventList = eventMapper.selectList(queryWrapper);
         Map<String, Object> map = new HashMap<>();
         Event event = eventList.get(0);
-        map.put("event",event);
+        EventDto eventDto = new EventDto();
+        BeanUtils.copyProperties(event,eventDto);
         User user = userMapper.findById(event.getSubmitUserId());
-        map.put("tel",user.getTelephone());
-        map.put("userName",user.getRealName());
+        eventDto.setSubmitUser(user);
+        eventDto.setFilesList(imagesMapper.findByEventId(eventDto.getId()));
+        map.put("event",eventDto);
         Duration duration = Duration.between(LocalDateTime.now(),event.getEndDate());
         map.put("day",duration.toDays());
         map.put("hour",duration.toHours()%24);
@@ -125,7 +133,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         Map<String, Object> map = new HashMap<>();
         int outset = 0;
         int pages = 1;
-        List<Event> eventListTotal = eventMapper.findByCondition(name, type, stage, null, null);
+        List<EventDto> eventListTotal = eventMapper.findByCondition(name, type, stage, null, null);
         if (pageNum!=null&&pageSize!=null){
             outset = (pageNum-1)*pageSize;
             pages =eventListTotal.size()/pageSize;
@@ -133,7 +141,10 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
                 pages++;
             }
         }
-        List<Event> eventList = eventMapper.findByCondition(name, type, stage, outset, pageSize);
+        List<EventDto> eventList = eventMapper.findByCondition(name, type, stage, outset, pageSize);
+        for (int x=0; x<eventList.size(); x++){
+            eventList.get(x).setSubmitUser(userMapper.findById(eventList.get(x).getSubmitUserId()));
+        }
         map.put("eventList", eventList);
         //若未传size、page，将返回所有结果，所以将current当前页为1，size为总条数传回
         if (pageSize!=null){
@@ -173,5 +184,39 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         event.setStage(EventStageEnum.ABNORMAL.getStatus());
         eventMapper.updateById(event);
         return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "已成功驳回！");
+    }
+
+    @Override
+    public Result searchEvent(String name, Integer type, Integer stage, Integer pageNum, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        int outset = 0;
+        int pages = 1;
+        List<EventDto> eventListTotal = eventMapper.searchEvent(name, type, stage, null, null);
+        if (pageNum!=null&&pageSize!=null){
+            outset = (pageNum-1)*pageSize;
+            pages =eventListTotal.size()/pageSize;
+            if(eventListTotal.size()%pageSize!=0){
+                pages++;
+            }
+        }
+        List<EventDto> eventList = eventMapper.searchEvent(name, type, stage, outset, pageSize);
+        for (int x=0; x<eventList.size(); x++){
+            eventList.get(x).setSubmitUser(userMapper.findById(eventList.get(x).getSubmitUserId()));
+        }
+        map.put("eventList", eventList);
+        //若未传size、page，将返回所有结果，所以将current当前页为1，size为总条数传回
+        if (pageSize!=null){
+            map.put("pageSize",pageSize);
+        }else {
+            map.put("pageSize",eventListTotal.size());
+        }
+        if (pageNum!=null){
+            map.put("pageNum",pageNum);
+        }else {
+            map.put("pageNum",1);
+        }
+        map.put("total",eventListTotal.size());
+        map.put("pages",pages);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "查询成功！", map);
     }
 }
