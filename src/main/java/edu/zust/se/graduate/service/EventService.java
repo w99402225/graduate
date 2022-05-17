@@ -25,6 +25,9 @@ public interface EventService extends IService<Event> {
     //操作员审批事件
     Result operation(Event event);
 
+    //审查员审批事件
+    Result review(Event event);
+
     //驳回事件
     Result refuse(Event event);
 

@@ -63,6 +63,11 @@ public class EventController {
         return eventService.operation(event);
     }
 
+    @PostMapping("/review")
+    public Result review(@RequestBody Event event){
+        return eventService.review(event);
+    }
+
     @PostMapping("/refuse")
     public Result refuse(@RequestBody Event event){
         return eventService.refuse(event);

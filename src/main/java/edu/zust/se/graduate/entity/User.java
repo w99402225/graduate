@@ -33,6 +33,9 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "真实姓名")
     private String realName;
 
+    @ApiModelProperty(value = "身份证号")
+    private String idNumber;
+
     @ApiModelProperty(value = "昵称")
     private String nickname;
 

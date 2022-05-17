@@ -144,6 +144,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
         List<EventDto> eventList = eventMapper.findByCondition(name, type, stage, outset, pageSize);
         for (int x=0; x<eventList.size(); x++){
             eventList.get(x).setSubmitUser(userMapper.findById(eventList.get(x).getSubmitUserId()));
+            eventList.get(x).setFilesList(imagesMapper.findByEventId(eventList.get(x).getId()));
         }
         map.put("eventList", eventList);
         //若未传size、page，将返回所有结果，所以将current当前页为1，size为总条数传回
@@ -175,8 +176,26 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
     }
 
     @Override
+    public Result review(Event event) {
+        User user =userMapper.findById(event.getReviewUserId());
+        if (user.getUserType()!= UserTypeEnum.REVIEW.getStatus()){
+            return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "只有审查员可进行此项操作");
+        }
+        event.setUpdateDate(LocalDateTime.now());
+        event.setStage(EventStageEnum.PROGRESS.getStatus());
+        eventMapper.updateById(event);
+        return new Result(HttpStatus.OK, CodeConstant.SUCCESS, "审批通过！");
+    }
+
+    @Override
     public Result refuse(Event event) {
-        User user =userMapper.findById(event.getOperationUserId());
+        User user = new User();
+        if (event.getReviewUserId()!=null){
+            user = userMapper.findById(event.getReviewUserId());
+        }
+        if (event.getOperationUserId()!=null){
+            user = userMapper.findById(event.getOperationUserId());
+        }
         if (user.getUserType()!= UserTypeEnum.OPERATION.getStatus()&&user.getUserType()!=UserTypeEnum.REVIEW.getStatus()){
             return new Result(HttpStatus.BAD_REQUEST, CodeConstant.ILLEGAL_REQUEST_ERROR, "只有操作员/审查员可进行此项操作");
         }
